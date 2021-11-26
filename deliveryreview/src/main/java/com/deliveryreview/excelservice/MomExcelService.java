@@ -268,7 +268,7 @@ public class MomExcelService {
 				momSheet.addMergedRegion(new CellRangeAddress(20, 21, 10, 10));
 
 				Cell actionItemsCell4 = actionItemHeaderRow.createCell(11);
-				actionItemsCell4.setCellValue("Completiondate");
+				actionItemsCell4.setCellValue("Completion Date");
 				actionItemsCell4.setCellStyle(momMainStyle);
 				momSheet.addMergedRegion(new CellRangeAddress(20, 21, 11, 11));
 
@@ -355,7 +355,7 @@ public class MomExcelService {
 				momSheet.addMergedRegion(new CellRangeAddress(actionItemTaskDetailsRowNumber+1, 100, 1, 14));
 				
 				momSheet.setColumnWidth(9, 25 * 256);
-				momSheet.setColumnWidth(11, 25 * 256);
+				momSheet.setColumnWidth(11, 25 * 175);
 				momSheet.setColumnWidth(12, 25 * 256);
 				
 			} catch (Exception ex) {
