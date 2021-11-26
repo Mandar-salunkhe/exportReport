@@ -21,7 +21,6 @@ public class MomController {
 
 	@PostMapping("/exportReport")
 	public ServiceResponse exportMomReport(@RequestBody MomRequest momDetails) throws Exception {
-		
 		return momService.exportMomReport(momDetails);
 	}
 }

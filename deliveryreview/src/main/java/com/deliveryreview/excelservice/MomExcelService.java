@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +39,10 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import com.deliveryreview.request.MomRequest;
 import com.deliveryreview.utility.ImageUtil;
@@ -51,8 +60,9 @@ public class MomExcelService {
 		try {
 			workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
-			CreationHelper createHelper = workbook.getCreationHelper();
-			Sheet momSheet = workbook.createSheet("Mom-Date.xlsx");
+			Date date = new Date(momDetails.getDateL());
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
+			Sheet momSheet = workbook.createSheet("Mom-"+formatter.format(date));
 
 			try {
 				
@@ -362,6 +372,8 @@ public class MomExcelService {
 				logger.error(ex.getMessage(), ex);
 			}
 			workbook.write(fileOut);
+			
+			
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		} finally {
@@ -375,6 +387,21 @@ public class MomExcelService {
 		}
 		return status;
 
+	}
+	
+	
+	public ResponseEntity<UrlResource> download(File fileName) throws IOException {
+		Path path = Paths.get(fileName.getName());
+		UrlResource resource = null;
+		try {
+			resource = new UrlResource(path.toUri());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType("application/octet-stream"))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
 	}
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {
