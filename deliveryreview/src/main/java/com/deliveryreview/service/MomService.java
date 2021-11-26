@@ -1,5 +1,6 @@
 package com.deliveryreview.service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +18,7 @@ public class MomService {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ServiceResponse exportMomReport(MomRequest momDetails) {
-		System.out.println(momDetails);
+	public ServiceResponse exportMomReport(MomRequest momDetails) throws IOException {
 		ServiceResponse serviceResponse = new ServiceResponse();
 		MomExcelService momExcelService = new MomExcelService();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
