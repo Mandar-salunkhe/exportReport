@@ -51,8 +51,8 @@ public class MomExcelService {
 	private static final Logger logger = LogManager.getLogger(MomExcelService.class);
 
 	public String exportMomReport(List<MomRequest> momDetails) throws IOException {
-		String status = "";
 		logger.debug("Exporting Excel");
+		String status ="";
 		Workbook workbook = null;
 		FileOutputStream fileOut = null;
 		File file = new File("Mom_Details_Sample.xlsx");
@@ -78,11 +78,10 @@ public class MomExcelService {
 
 					momSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 15));
 
-					
-					
 					CellStyle momMainHeaderStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momMainHeaderStyle, true, 16, IndexedColors.BLACK.getIndex());
-					setBGColor(workbook, momMainHeaderStyle, new Color(184, 204, 228), FillPatternType.SOLID_FOREGROUND);
+					setBGColor(workbook, momMainHeaderStyle, new Color(184, 204, 228),
+							FillPatternType.SOLID_FOREGROUND);
 					momMainHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
 					momMainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 					momMainHeaderStyle.setWrapText(true);
@@ -149,16 +148,14 @@ public class MomExcelService {
 					cellCenterStyle.setAlignment(HorizontalAlignment.CENTER);
 					cellCenterStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-					
-
 					Row momHeaderRow1 = momSheet.createRow(1);
 					Row momHeaderRow2 = momSheet.createRow(2);
 					Row momHeaderRow3 = momSheet.createRow(3);
-					
+
 					Cell cell0 = momHeaderRow1.createCell(1);
 					cell0.setCellStyle(momMainStyle);
 					momSheet.addMergedRegion(new CellRangeAddress(1, 3, 1, 2));
-					
+
 					// Logo
 					byte[] bytes = IOUtils.toByteArray(ImageUtil.getImage(ImageUtil.CLIENT_LOGO));
 					int pictureIdx = workbook.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
@@ -184,7 +181,7 @@ public class MomExcelService {
 					Cell momDateRow2Cell11 = momHeaderRow2.createCell(11);
 					momDateRow2Cell11.setCellValue("Date");
 					momDateRow2Cell11.setCellStyle(momMainStyle);
-					
+
 					Cell momDateCell12 = momHeaderRow2.createCell(12);
 					momDateCell12.setCellValue(mom.getDate().toString());
 					momDateCell12.setCellStyle(cellCenterStyle);
@@ -222,7 +219,7 @@ public class MomExcelService {
 					participantHeaderCell2.setCellStyle(momMainStyle);
 					momSheet.addMergedRegion(new CellRangeAddress(k, (k + mom.getParticipants().size()), 14, 14));
 
-					int j = k+1;
+					int j = k + 1;
 
 					for (int i = 0; i < mom.getParticipants().size(); i++) {
 						momParticipantRow = momSheet.createRow(j);
@@ -235,76 +232,79 @@ public class MomExcelService {
 					Row blankRow = momSheet.createRow(j);
 					Cell blankRowCell = blankRow.createCell(1);
 					blankRowCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(j, j+1, 1, 14));
-					
-					int pointDiscussedHeaderRowNumber = j+2;
+					momSheet.addMergedRegion(new CellRangeAddress(j, j + 1, 1, 14));
+
+					int pointDiscussedHeaderRowNumber = j + 2;
 
 					Row pointDiscussedHeaderRow = momSheet.createRow(pointDiscussedHeaderRowNumber);
 
 					Cell pointDiscussedHeaderCell = pointDiscussedHeaderRow.createCell(1);
 					pointDiscussedHeaderCell.setCellValue("Point Discussed");
 					pointDiscussedHeaderCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber, pointDiscussedHeaderRowNumber+2, 1, 2));
+					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber,
+							pointDiscussedHeaderRowNumber + 2, 1, 2));
 
 					Cell pointDiscussedValueCell = pointDiscussedHeaderRow.createCell(3);
 					pointDiscussedValueCell.setCellValue(mom.getPointsDiscussed());
 					pointDiscussedValueCell.setCellStyle(momSecondaryStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber, pointDiscussedHeaderRowNumber+2, 3, 13));
+					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber,
+							pointDiscussedHeaderRowNumber + 2, 3, 13));
 
 					Cell pointDiscuusedBlankCell = pointDiscussedHeaderRow.createCell(14);
 					pointDiscuusedBlankCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber, pointDiscussedHeaderRowNumber+2, 14, 14));
+					momSheet.addMergedRegion(new CellRangeAddress(pointDiscussedHeaderRowNumber,
+							pointDiscussedHeaderRowNumber + 2, 14, 14));
 
-					int blankRowNumber = pointDiscussedHeaderRowNumber+3;
+					int blankRowNumber = pointDiscussedHeaderRowNumber + 3;
 					Row blankRow1 = momSheet.createRow(blankRowNumber);
 					Cell blankRowCell1 = blankRow1.createCell(1);
 					blankRowCell1.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber, blankRowNumber+1, 1, 14));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber, blankRowNumber + 1, 1, 14));
 
-					Row actionItemHeaderRow = momSheet.createRow(blankRowNumber+2);
+					Row actionItemHeaderRow = momSheet.createRow(blankRowNumber + 2);
 
 					Cell actionItemsCell = actionItemHeaderRow.createCell(1);
 					actionItemsCell.setCellValue("Point Agreed/Action Items");
 					actionItemsCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 1, 2));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 1, 2));
 
 					Cell actionItemsCell1 = actionItemHeaderRow.createCell(3);
 					actionItemsCell1.setCellValue("Task Details");
 					actionItemsCell1.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 3, 8));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 3, 8));
 
 					Cell actionItemsCell2 = actionItemHeaderRow.createCell(9);
 					actionItemsCell2.setCellValue("Responsible");
 					actionItemsCell2.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 9, 9));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 9, 9));
 
 					Cell actionItemsCell3 = actionItemHeaderRow.createCell(10);
 					actionItemsCell3.setCellValue("Status");
 					actionItemsCell3.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 10, 10));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 10, 10));
 
 					Cell actionItemsCell4 = actionItemHeaderRow.createCell(11);
 					actionItemsCell4.setCellValue("Completion Date");
 					actionItemsCell4.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 11, 11));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 11, 11));
 
 					Cell actionItemsCell5 = actionItemHeaderRow.createCell(12);
 					actionItemsCell5.setCellValue("Remarks");
 					actionItemsCell5.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 12, 13));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 12, 13));
 
 					Cell actionItemsBlankCell = actionItemHeaderRow.createCell(14);
 					actionItemsBlankCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+2, blankRowNumber+3, 14, 14));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 2, blankRowNumber + 3, 14, 14));
 
-					Row actionItemFullDateRow = momSheet.createRow(blankRowNumber+4);
+					Row actionItemFullDateRow = momSheet.createRow(blankRowNumber + 4);
 
 					Cell actionItemFullDateRowCell = actionItemFullDateRow.createCell(1);
 					actionItemFullDateRowCell.setCellValue(mom.getDate().toString());
 					actionItemFullDateRowCell.setCellStyle(momMainStyle);
-					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber+4, blankRowNumber+4, 1, 14));
+					momSheet.addMergedRegion(new CellRangeAddress(blankRowNumber + 4, blankRowNumber + 4, 1, 14));
 
-					int actionItemTaskDetailsRowNumber = blankRowNumber+5;
+					int actionItemTaskDetailsRowNumber = blankRowNumber + 5;
 					Row actionItemTableDataRow;
 					for (int i = 0; i < mom.getMomActionList().size(); i++) {
 						actionItemTableDataRow = momSheet.createRow(actionItemTaskDetailsRowNumber);
@@ -383,13 +383,15 @@ public class MomExcelService {
 				}
 			}
 			workbook.write(fileOut);
+			status = "Success";
 
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			status= "Failed";
 		} finally {
 			if (fileOut != null)
 				fileOut.close();
-
+			
 			if (workbook != null) {
 				workbook.close();
 			}
