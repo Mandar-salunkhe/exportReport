@@ -1,5 +1,7 @@
 package com.deliveryreview.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class MomController {
 	MomService momService;
 
 	@PostMapping("/exportReport")
-	public ServiceResponse exportMomReport(@RequestBody MomRequest momDetails) throws Exception {
+	public ServiceResponse exportMomReport(@RequestBody List<MomRequest> momDetails) throws Exception {
 		return momService.exportMomReport(momDetails);
 	}
 }

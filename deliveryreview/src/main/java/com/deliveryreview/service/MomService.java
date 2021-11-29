@@ -2,6 +2,7 @@ package com.deliveryreview.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -14,11 +15,9 @@ import com.deliveryreview.utility.ResponseStatus;
 @Service
 public class MomService {
 
-	public MomService() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
-	public ServiceResponse exportMomReport(MomRequest momDetails) throws IOException {
+	public ServiceResponse exportMomReport(List<MomRequest> momDetails) throws IOException {
 		ServiceResponse serviceResponse = new ServiceResponse();
 		MomExcelService momExcelService = new MomExcelService();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
