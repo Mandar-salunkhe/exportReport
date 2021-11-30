@@ -4,7 +4,7 @@ public class ResourceList {
 
 	private String id;
 	private String label;
-	private String title;
+	//private String title;
 	public String getId() {
 		return id;
 	}
@@ -17,15 +17,14 @@ public class ResourceList {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
+
+	/*
+	 * public String getTitle() { return title; } public void setTitle(String title)
+	 * { this.title = title; }
+	 */
 	@Override
 	public String toString() {
-		return "ResourceList [id=" + id + ", label=" + label + ", title=" + title + "]";
+		return "ResourceList [id=" + id + ", label=" + label + "]";
 	}
 	
 }

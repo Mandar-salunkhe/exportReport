@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,10 +36,6 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import com.deliveryreview.request.MomRequest;
 import com.deliveryreview.utility.ImageUtil;
@@ -50,14 +43,14 @@ import com.deliveryreview.utility.ImageUtil;
 public class MomExcelService {
 	private static final Logger logger = LogManager.getLogger(MomExcelService.class);
 
-	public String exportMomReport(List<MomRequest> momDetails) throws IOException {
-		logger.debug("Exporting Excel");
-		String status ="";
+	public File exportMomReport(List<MomRequest> momDetails) throws IOException {
+		logger.info("Exporting Mom Excel Report");
 		Workbook workbook = null;
 		FileOutputStream fileOut = null;
-		File file = new File("Mom_Details_Sample.xlsx");
+		File file = new File("Delivery_Review_Mom_Details.xlsx");
 
 		try {
+			
 			workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
 
@@ -92,11 +85,6 @@ public class MomExcelService {
 					momMainStyle.setAlignment(HorizontalAlignment.CENTER);
 					momMainStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 					momMainStyle.setWrapText(true);
-// 					setBorder(momMainStyle, BorderStyle.THIN, BorderStyle.THIN, BorderStyle.THIN, BorderStyle.THIN);
-//					momMainStyle.setBottomBorderColor(IndexedColors.WHITE.getIndex());
-//					momMainStyle.setTopBorderColor(IndexedColors.WHITE.getIndex());
-//					momMainStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-//					momMainStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
 
 					CellStyle momSecondaryStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momSecondaryStyle, false, 11, IndexedColors.BLACK.getIndex());
@@ -107,40 +95,30 @@ public class MomExcelService {
 					CellStyle momGreenBgStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momGreenBgStyle, false, 11, IndexedColors.BLACK.getIndex());
 					setBGColor(workbook, momGreenBgStyle, new Color(146, 208, 80), FillPatternType.SOLID_FOREGROUND);
-					// setBorder(momGreenBgStyle, BorderStyle.THIN, BorderStyle.THIN,
-					// BorderStyle.THIN, BorderStyle.THIN);
 					momGreenBgStyle.setAlignment(HorizontalAlignment.CENTER);
 					momGreenBgStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 					CellStyle momYellowBgStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momYellowBgStyle, false, 11, IndexedColors.BLACK.getIndex());
 					setBGColor(workbook, momYellowBgStyle, new Color(255, 255, 0), FillPatternType.SOLID_FOREGROUND);
-					// setBorder(momYellowBgStyle, BorderStyle.THIN, BorderStyle.THIN,
-					// BorderStyle.THIN, BorderStyle.THIN);
 					momYellowBgStyle.setAlignment(HorizontalAlignment.CENTER);
 					momYellowBgStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 					CellStyle momRedBgStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momRedBgStyle, false, 11, IndexedColors.BLACK.getIndex());
 					setBGColor(workbook, momRedBgStyle, new Color(255, 0, 0), FillPatternType.SOLID_FOREGROUND);
-					// setBorder(momRedBgStyle, BorderStyle.THIN, BorderStyle.THIN,
-					// BorderStyle.THIN, BorderStyle.THIN);
 					momRedBgStyle.setAlignment(HorizontalAlignment.CENTER);
 					momRedBgStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 					CellStyle momOrangeBgStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momOrangeBgStyle, false, 11, IndexedColors.BLACK.getIndex());
 					setBGColor(workbook, momOrangeBgStyle, new Color(255, 165, 0), FillPatternType.SOLID_FOREGROUND);
-					// setBorder(momOrangeBgStyle, BorderStyle.THIN, BorderStyle.THIN,
-					// BorderStyle.THIN, BorderStyle.THIN);
 					momOrangeBgStyle.setAlignment(HorizontalAlignment.CENTER);
 					momOrangeBgStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 					CellStyle momBrownBgStyle = workbook.createCellStyle();
 					setFont(workbook.createFont(), momBrownBgStyle, false, 11, IndexedColors.BLACK.getIndex());
 					setBGColor(workbook, momBrownBgStyle, new Color(148, 138, 84), FillPatternType.SOLID_FOREGROUND);
-					// setBorder(momBrownBgStyle, BorderStyle.THIN, BorderStyle.THIN,
-					// BorderStyle.THIN, BorderStyle.THIN);
 					momBrownBgStyle.setAlignment(HorizontalAlignment.CENTER);
 					momBrownBgStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
@@ -383,11 +361,9 @@ public class MomExcelService {
 				}
 			}
 			workbook.write(fileOut);
-			status = "Success";
 
-		} catch (Exception ex) {
+		} catch (Exception ex ) {
 			logger.error(ex.getMessage(), ex);
-			status= "Failed";
 		} finally {
 			if (fileOut != null)
 				fileOut.close();
@@ -397,22 +373,11 @@ public class MomExcelService {
 			}
 
 		}
-		return status;
+		return file;
 
 	}
 
-	public ResponseEntity<UrlResource> download(File fileName) throws IOException {
-		Path path = Paths.get(fileName.getName());
-		UrlResource resource = null;
-		try {
-			resource = new UrlResource(path.toUri());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-				.body(resource);
-	}
+	
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {
 		CellRangeAddress cellMerge = new CellRangeAddress(numRow, untilRow, numCol, untilCol);
