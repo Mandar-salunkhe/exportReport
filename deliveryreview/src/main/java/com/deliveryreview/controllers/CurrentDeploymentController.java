@@ -1,5 +1,7 @@
 package com.deliveryreview.controllers;
 
+import java.io.IOException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.deliveryreview.request.CurrentDeploymentRequest;
+import com.deliveryreview.service.CurrentDeploymentService;
+import com.deliveryreview.service.ServiceResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,13 +23,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value = "/deliveryReviewReport")
 public class CurrentDeploymentController {
 	
-	
+	@Autowired
+	CurrentDeploymentService deploymentService;
 	
 	@PostMapping("/downloadDeploymentReport")
-    public String DownloadDeploymentStatus(@RequestBody CurrentDeploymentRequest downloadXls) {
+    public ServiceResponse DownloadDeploymentStatus(@RequestBody CurrentDeploymentRequest downloadXls) throws IOException {
 		System.out.println("API is been Hit!!!!!! ");
 		 ObjectMapper mapper = new ObjectMapper();
-        try {
+     
 			String activeConsultantsRows = mapper.writeValueAsString(downloadXls.getActiveConsultantsRows());
 			JSONArray activeConsultantsArray = new JSONArray(activeConsultantsRows);
 			
@@ -37,12 +42,9 @@ public class CurrentDeploymentController {
 			
 			String inActivePartnerEcoSystemRows = mapper.writeValueAsString(downloadXls.getInActivePartnerEcoSystemRows());
 			JSONArray inActivePartnerEcoSystemRowsArray = new JSONArray(inActivePartnerEcoSystemRows);
-			
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}	
-		return "Success";
-      	
+				
+        return deploymentService.exportDeploymentData(downloadXls.getHeaderList(),activeConsultantsArray,inActiveConsultantsRowsArray,partnerEcoSystemRowsArray,inActivePartnerEcoSystemRowsArray);
+        
     }
 	@GetMapping("/test")
 	public String testApi() {
