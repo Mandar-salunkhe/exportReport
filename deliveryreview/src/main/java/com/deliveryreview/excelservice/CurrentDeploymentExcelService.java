@@ -35,7 +35,7 @@ import com.deliveryreview.request.HeaderList;
 
 public class CurrentDeploymentExcelService {
 
-	public String exportMomReport(List<HeaderList> headerList, JSONArray activeConsultantsArray,
+	public File exportMomReport(List<HeaderList> headerList, JSONArray activeConsultantsArray,
 			JSONArray inActiveConsultantsRowsArray, JSONArray partnerEcoSystemRowsArray,
 			JSONArray inActivePartnerEcoSystemRowsArray) throws IOException {
 
@@ -304,7 +304,7 @@ public class CurrentDeploymentExcelService {
 				workbook.close();
 			}
 		} 
-		return status;
+		return file;
 	}
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {
