@@ -4,13 +4,13 @@ public class CustomResponse {
 
     private final long responseCode;
     private final String responseMessage;
-    private final String momExcelFile;
+    private final String excelFile;
     
 
-    public CustomResponse(long responseCode, String responseMessage,String momExcelFile) {
+    public CustomResponse(long responseCode, String responseMessage,String excelFile) {
 	this.responseCode = responseCode;
 	this.responseMessage = responseMessage;
-	this.momExcelFile = momExcelFile;
+	this.excelFile = excelFile;
     }
 
     public long getResponseCode() {
@@ -22,13 +22,13 @@ public class CustomResponse {
     }
     
     public String getMomExcelFile() {
-		return momExcelFile;
+		return excelFile;
 	}
 
 	@Override
 	public String toString() {
 		return "CustomResponse [responseCode=" + responseCode + ", responseMessage=" + responseMessage
-				+ ", momExcelFile=" + momExcelFile + "]";
+				+ ", excelFile=" + excelFile + "]";
 	}
 
 }
