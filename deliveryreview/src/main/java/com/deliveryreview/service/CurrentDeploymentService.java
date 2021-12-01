@@ -23,7 +23,7 @@ public class CurrentDeploymentService {
 
 	public ServiceResponse exportDeploymentData(List<HeaderList> headerList, JSONArray activeConsultantsArray, JSONArray inActiveConsultantsRowsArray,
 			JSONArray partnerEcoSystemRowsArray, JSONArray inActivePartnerEcoSystemRowsArray) throws IOException {
-		
+
 		CurrentDeploymentExcelService service = new CurrentDeploymentExcelService();
 		ServiceResponse serviceResponse = new ServiceResponse();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
@@ -42,11 +42,11 @@ public class CurrentDeploymentService {
 		//		return serviceResponse;
 
 		String ExcelFileString = encodeFileToBase64Binary(result.getName());
-
-
-		JSONObject excelData;
 		
+		JSONObject excelData;
+
 		if (!ExcelFileString.isEmpty() && result.exists()) {
+
 			excelData = new JSONObject();
 			excelData.put("status", "Success");
 			excelData.put("fileName", result.getName());
@@ -54,23 +54,23 @@ public class CurrentDeploymentService {
 			excelData.put("excelBase64String", ExcelFileString);		
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
 					ResponseStatus.SUCCESS.getResponseMessage(),excelData.toString());
-			
+
 		} else {
 			excelData = new JSONObject();
 			excelData.put("status", "Failed");
-				customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
+			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
 					ResponseStatus.FAILED.getResponseMessage(),excelData.toString());
-			
+
 		}
 		responseMap.put("response", customResponse);
 		serviceResponse.setServiceResponse(responseMap);
 		return serviceResponse;
 	}
-	
+
 	private static String encodeFileToBase64Binary(String fileName) throws IOException {
-	    File file = new File(fileName);
-	    byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
-	    return new String(encoded, StandardCharsets.US_ASCII);
+		File file = new File(fileName);
+		byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
+		return new String(encoded, StandardCharsets.US_ASCII);
 	}
 
 }
