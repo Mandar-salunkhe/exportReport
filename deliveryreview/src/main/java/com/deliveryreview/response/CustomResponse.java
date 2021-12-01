@@ -20,8 +20,8 @@ public class CustomResponse {
     public String getResponseMessage() {
 	return responseMessage;
     }
-    
-    public String getMomExcelFile() {
+
+	public String getExcelFile() {
 		return excelFile;
 	}
 
