@@ -28,21 +28,22 @@ public class CurrentDeploymentService {
 		ServiceResponse serviceResponse = new ServiceResponse();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
 		CustomResponse customResponse = null;
-		File result = service.exportMomReport(headerList,activeConsultantsArray,inActiveConsultantsRowsArray,partnerEcoSystemRowsArray,inActivePartnerEcoSystemRowsArray);
-//		if (result.equals("Success")) {
-//			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
-//					ResponseStatus.SUCCESS.getResponseMessage());
-//		} else {
-//			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
-//					ResponseStatus.FAILED.getResponseMessage());
-//		}
-//
-//		responseMap.put("response", customResponse);
-//		serviceResponse.setServiceResponse(responseMap);
-//		return serviceResponse;
-		
-String ExcelFileString = encodeFileToBase64Binary(result.getName());
-		
+		File result = service.exportCurrDepReport(headerList,activeConsultantsArray,inActiveConsultantsRowsArray,partnerEcoSystemRowsArray,inActivePartnerEcoSystemRowsArray);
+		//		if (result.equals("Success")) {
+		//			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
+		//					ResponseStatus.SUCCESS.getResponseMessage());
+		//		} else {
+		//			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
+		//					ResponseStatus.FAILED.getResponseMessage());
+		//		}
+		//
+		//		responseMap.put("response", customResponse);
+		//		serviceResponse.setServiceResponse(responseMap);
+		//		return serviceResponse;
+
+		String ExcelFileString = encodeFileToBase64Binary(result.getName());
+
+
 		JSONObject excelData;
 		
 		if (!ExcelFileString.isEmpty() && result.exists()) {

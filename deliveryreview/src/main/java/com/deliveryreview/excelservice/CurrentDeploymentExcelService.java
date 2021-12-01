@@ -35,7 +35,7 @@ import com.deliveryreview.request.HeaderList;
 
 public class CurrentDeploymentExcelService {
 
-	public File exportMomReport(List<HeaderList> headerList, JSONArray activeConsultantsArray,
+	public File exportCurrDepReport(List<HeaderList> headerList, JSONArray activeConsultantsArray,
 			JSONArray inActiveConsultantsRowsArray, JSONArray partnerEcoSystemRowsArray,
 			JSONArray inActivePartnerEcoSystemRowsArray) throws IOException {
 
