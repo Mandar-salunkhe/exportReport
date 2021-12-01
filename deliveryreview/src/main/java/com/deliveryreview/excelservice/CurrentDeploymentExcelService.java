@@ -104,18 +104,17 @@ public class CurrentDeploymentExcelService {
 				Row currDepRepHeader = currDepSheet.createRow(0);
 				int srNo = 1;
 
+				Cell srNoCol = currDepRepHeader.createCell(0);
+				srNoCol.setCellValue("Sr.No");
+				srNoCol.setCellStyle(mainStyle);
 				for (int i = 0; i < headerList.size(); i++) {
-					Cell headerValues = currDepRepHeader.createCell(i);
-					if(i == 0) {
-						headerValues.setCellValue("Sr.No");
-					}else {
-						headerValues.setCellValue(headerList.get(i).getLabel());
-						currDepSheet.autoSizeColumn(i);
-						headerValues.setCellStyle(mainStyle);
-					}
+					Cell headerValues = currDepRepHeader.createCell(i+1);
+					headerValues.setCellValue(headerList.get(i).getLabel());
+					currDepSheet.autoSizeColumn(i+1);
+					headerValues.setCellStyle(mainStyle);
 				}
 
-				currDepSheet.createFreezePane( 4, 1);
+				currDepSheet.createFreezePane( 5, 1);
 				// Freeze just one column
 				//				      test2.createFreezePane(1, 0, 1, 0);
 				//				      // Freeze the columns and rows (forget about scrolling position of the lower right quadrant).
@@ -139,28 +138,32 @@ public class CurrentDeploymentExcelService {
 					int activeCons = currDepSheet.getLastRowNum()+1;
 					Row activeConsTableData = currDepSheet.createRow(activeCons);
 					JSONArray resourceArr = activeConsultantsArray.getJSONArray(i);
+					Cell activeConstResCellSrNo = activeConsTableData.createCell(0);
+					activeConstResCellSrNo.setCellValue(srNo);
+					activeConstResCellSrNo.setCellStyle(mainStyle);
 					for (int j = 0; j < resourceArr.length(); j++) {
-						Cell activeConstResCell = activeConsTableData.createCell(j);
-						if(j == 0) {
-							activeConstResCell.setCellValue(srNo);
-							activeConstResCell.setCellStyle(mainStyle);
+						Cell activeConstResCell = activeConsTableData.createCell(j+1);
+
+						//						if(j == 0) {
+						//							activeConstResCell.setCellValue(srNo);
+						//							activeConstResCell.setCellStyle(mainStyle);
+						//						}else {
+						if(resourceArr.getJSONObject(j).get("label").toString() == "null"){
+							activeConstResCell.setCellValue("Still in Organization");
 						}else {
-							if(resourceArr.getJSONObject(j).get("label").toString() == "null"){
-								activeConstResCell.setCellValue("Still in Organization");
-							}else {
-								activeConstResCell.setCellValue(resourceArr.getJSONObject(j).get("label").toString());
-							}
-							if(resourceArr.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr.getJSONObject(j).get("label").toString().equals("Partially Billed")) {
-								activeConstResCell.setCellStyle(billableStyle);
-							}else if(resourceArr.getJSONObject(j).get("label").toString().equals("Non Billable")) {
-								activeConstResCell.setCellStyle(nonBillableStyle);
-							}else if(resourceArr.getJSONObject(j).get("label").toString().equals("Bench")) {
-								activeConstResCell.setCellStyle(benchStyle);
-							}else {
-								activeConstResCell.setCellStyle(mainStyle);
-							}
+							activeConstResCell.setCellValue(resourceArr.getJSONObject(j).get("label").toString());
 						}
-						currDepSheet.autoSizeColumn(j);
+						if(resourceArr.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr.getJSONObject(j).get("label").toString().equals("Partially Billed")) {
+							activeConstResCell.setCellStyle(billableStyle);
+						}else if(resourceArr.getJSONObject(j).get("label").toString().equals("Non Billable")) {
+							activeConstResCell.setCellStyle(nonBillableStyle);
+						}else if(resourceArr.getJSONObject(j).get("label").toString().equals("Bench")) {
+							activeConstResCell.setCellStyle(benchStyle);
+						}else {
+							activeConstResCell.setCellStyle(mainStyle);
+						}
+
+						currDepSheet.autoSizeColumn(j+1);
 					}
 					srNo++;
 				}
@@ -180,28 +183,27 @@ public class CurrentDeploymentExcelService {
 					int inActiveCons = currDepSheet.getLastRowNum()+1;
 					Row inActiveConsTableData = currDepSheet.createRow(inActiveCons);
 					JSONArray resourceArr1 = inActiveConsultantsRowsArray.getJSONArray(i);
+					Cell InActiveConstResCellSrNo = inActiveConsTableData.createCell(0);
+					InActiveConstResCellSrNo.setCellValue(srNo);
+					InActiveConstResCellSrNo.setCellStyle(mainStyle);
 					for (int j = 0; j < resourceArr1.length(); j++) {
-						Cell InActiveConstResCell = inActiveConsTableData.createCell(j);
-						if(j == 0) {
-							InActiveConstResCell.setCellValue(srNo);
-							InActiveConstResCell.setCellStyle(mainStyle);
+						Cell InActiveConstResCell = inActiveConsTableData.createCell(j+1);
+
+						if(resourceArr1.getJSONObject(j).get("label").toString() == "null"){
+							InActiveConstResCell.setCellValue("Still in Organization");
 						}else {
-							if(resourceArr1.getJSONObject(j).get("label").toString() == "null"){
-								InActiveConstResCell.setCellValue("Still in Organization");
-							}else {
-								InActiveConstResCell.setCellValue(resourceArr1.getJSONObject(j).get("label").toString());
-							}
-							if(resourceArr1.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr1.getJSONObject(j).get("label").toString().equals("Partially Billed")) {
-								InActiveConstResCell.setCellStyle(billableStyle);
-							}else if(resourceArr1.getJSONObject(j).get("label").toString().equals("Non Billable")) {
-								InActiveConstResCell.setCellStyle(nonBillableStyle);
-							}else if(resourceArr1.getJSONObject(j).get("label").toString().equals("Bench")) {
-								InActiveConstResCell.setCellStyle(benchStyle);
-							}else {
-								InActiveConstResCell.setCellStyle(mainStyle);
-							}
-							currDepSheet.autoSizeColumn(j);
+							InActiveConstResCell.setCellValue(resourceArr1.getJSONObject(j).get("label").toString());
 						}
+						if(resourceArr1.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr1.getJSONObject(j).get("label").toString().equals("Partially Billed")) {
+							InActiveConstResCell.setCellStyle(billableStyle);
+						}else if(resourceArr1.getJSONObject(j).get("label").toString().equals("Non Billable")) {
+							InActiveConstResCell.setCellStyle(nonBillableStyle);
+						}else if(resourceArr1.getJSONObject(j).get("label").toString().equals("Bench")) {
+							InActiveConstResCell.setCellStyle(benchStyle);
+						}else {
+							InActiveConstResCell.setCellStyle(mainStyle);
+						}
+						currDepSheet.autoSizeColumn(j+1);
 					}
 					srNo++;
 				}
@@ -222,28 +224,27 @@ public class CurrentDeploymentExcelService {
 					int parActiveCons = currDepSheet.getLastRowNum()+1;
 					Row parActiveConsTableData = currDepSheet.createRow(parActiveCons);
 					JSONArray resourceArr2 = partnerEcoSystemRowsArray.getJSONArray(i);
+					Cell parActiveConstResCellSrNo = parActiveConsTableData.createCell(0);
+					parActiveConstResCellSrNo.setCellValue(srNo);
+					parActiveConstResCellSrNo.setCellStyle(mainStyle);
 					for (int j = 0; j < resourceArr2.length(); j++) {
-						Cell parActiveConstResCell = parActiveConsTableData.createCell(j);
-						if(j == 0) {
-							parActiveConstResCell.setCellValue(srNo);
-							parActiveConstResCell.setCellStyle(mainStyle);
+						Cell parActiveConstResCell = parActiveConsTableData.createCell(j+1);
+
+						if(resourceArr2.getJSONObject(j).get("label").toString() == "null"){
+							parActiveConstResCell.setCellValue("Still in Organization");
 						}else {
-							if(resourceArr2.getJSONObject(j).get("label").toString() == "null"){
-								parActiveConstResCell.setCellValue("Still in Organization");
-							}else {
-								parActiveConstResCell.setCellValue(resourceArr2.getJSONObject(j).get("label").toString());
-							}
-							if(resourceArr2.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr2.getJSONObject(j).get("label").toString().equals("Partially Billed") ) {
-								parActiveConstResCell.setCellStyle(billableStyle);
-							}else if(resourceArr2.getJSONObject(j).get("label").toString().equals("Non Billable")) {
-								parActiveConstResCell.setCellStyle(nonBillableStyle);
-							}else if(resourceArr2.getJSONObject(j).get("label").toString().equals("Bench")) {
-								parActiveConstResCell.setCellStyle(benchStyle);
-							}else {
-								parActiveConstResCell.setCellStyle(mainStyle);
-							}
-							currDepSheet.autoSizeColumn(j);
+							parActiveConstResCell.setCellValue(resourceArr2.getJSONObject(j).get("label").toString());
 						}
+						if(resourceArr2.getJSONObject(j).get("label").toString().equals("Billable") || resourceArr2.getJSONObject(j).get("label").toString().equals("Partially Billed") ) {
+							parActiveConstResCell.setCellStyle(billableStyle);
+						}else if(resourceArr2.getJSONObject(j).get("label").toString().equals("Non Billable")) {
+							parActiveConstResCell.setCellStyle(nonBillableStyle);
+						}else if(resourceArr2.getJSONObject(j).get("label").toString().equals("Bench")) {
+							parActiveConstResCell.setCellStyle(benchStyle);
+						}else {
+							parActiveConstResCell.setCellStyle(mainStyle);
+						}
+						currDepSheet.autoSizeColumn(j);
 					}
 					srNo++;
 				}
@@ -264,12 +265,12 @@ public class CurrentDeploymentExcelService {
 					int inParActiveCons = currDepSheet.getLastRowNum()+1;
 					Row parInActiveConsTableData = currDepSheet.createRow(inParActiveCons);
 					JSONArray resourceArr3 = inActivePartnerEcoSystemRowsArray.getJSONArray(i);
+					Cell parInActiveConstResCellSrNo = parInActiveConsTableData.createCell(0);
+					parInActiveConstResCellSrNo.setCellValue(srNo);
+					parInActiveConstResCellSrNo.setCellStyle(mainStyle);
 					for (int j = 0; j < resourceArr3.length(); j++) {
-						Cell parInActiveConstResCell = parInActiveConsTableData.createCell(j);
-						if(j == 0) {
-							parInActiveConstResCell.setCellValue(srNo);
-							parInActiveConstResCell.setCellStyle(mainStyle);
-						}else {
+						Cell parInActiveConstResCell = parInActiveConsTableData.createCell(j+1);
+				
 							if(resourceArr3.getJSONObject(j).get("label").toString() == "null"){
 								parInActiveConstResCell.setCellValue("Still in Organization");
 							}else {
@@ -284,9 +285,9 @@ public class CurrentDeploymentExcelService {
 							}else {
 								parInActiveConstResCell.setCellStyle(mainStyle);
 							}
-							currDepSheet.autoSizeColumn(j);
+							currDepSheet.autoSizeColumn(j+1);
 						}
-					}
+					
 					srNo++;
 				}
 
