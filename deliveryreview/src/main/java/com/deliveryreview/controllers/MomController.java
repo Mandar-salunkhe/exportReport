@@ -15,13 +15,13 @@ import com.deliveryreview.service.ServiceResponse;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping(value = "/mom")
+@RequestMapping(value = "/deliveryReviewReport")
 public class MomController {
 
 	@Autowired
 	MomService momService;
 
-	@PostMapping("/exportReport")
+	@PostMapping("/downloadMomReport")
 	public ServiceResponse exportMomReport(@RequestBody List<MomRequest> momDetails) throws Exception {
 		return momService.exportMomReport(momDetails);
 	}
