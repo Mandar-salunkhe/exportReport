@@ -2,9 +2,6 @@ package com.deliveryreview.request;
 
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class ConsolidateReportRequest {
 
 	public ConsolidateReportRequest() {

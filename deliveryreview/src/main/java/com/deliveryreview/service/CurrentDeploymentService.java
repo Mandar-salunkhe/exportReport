@@ -36,8 +36,7 @@ public class CurrentDeploymentService {
 		Map<Workbook, File> currentDeployment = service.exportCurrDepReport(headerList, activeConsultantsArray,
 				inActiveConsultantsRowsArray, partnerEcoSystemRowsArray, inActivePartnerEcoSystemRowsArray,
 				isConsolidateReport);
-		// File result =
-		// service.exportCurrDepReport(headerList,activeConsultantsArray,inActiveConsultantsRowsArray,partnerEcoSystemRowsArray,inActivePartnerEcoSystemRowsArray);
+		
 		File result = new File("");
 		if (isConsolidateReport) {
 

@@ -2,8 +2,6 @@ package com.deliveryreview.request;
 
 import java.util.List;
 
-import org.json.JSONObject;
-
 
 
 public class CurrentDeploymentRequest {

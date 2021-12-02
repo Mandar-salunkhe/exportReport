@@ -1,6 +1,5 @@
 package com.deliveryreview.controllers;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,6 @@ import com.deliveryreview.service.ConsolidateReportService;
 import com.deliveryreview.service.CurrentDeploymentService;
 import com.deliveryreview.service.MomService;
 import com.deliveryreview.service.ServiceResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

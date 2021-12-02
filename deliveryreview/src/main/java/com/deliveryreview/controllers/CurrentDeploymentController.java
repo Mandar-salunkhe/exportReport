@@ -3,7 +3,6 @@ package com.deliveryreview.controllers;
 import java.io.IOException;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.deliveryreview.request.CurrentDeploymentRequest;
 import com.deliveryreview.service.CurrentDeploymentService;
 import com.deliveryreview.service.ServiceResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController

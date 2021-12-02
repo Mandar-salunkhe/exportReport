@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +39,6 @@ public class CurrentDeploymentExcelService {
 			JSONArray inActivePartnerEcoSystemRowsArray, boolean isConsolidateReport) throws IOException {
 
 		Map<Workbook, File> testMap = new HashedMap<Workbook, File>();
-		String status = "";
 		File file = new File("");
 		Workbook workbook = null;
 		FileOutputStream fileOut = null;
@@ -56,12 +53,8 @@ public class CurrentDeploymentExcelService {
 
 			workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
-			Date date = new Date();
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			Sheet currDepSheet = workbook.createSheet("Current Deployment");
-			// Sheet test2 = workbook.createSheet("test1");
-			// Sheet test3 = workbook.createSheet("test2");
-			// Sheet test4 = workbook.createSheet("test3");
+			
 
 			try {
 
@@ -74,8 +67,6 @@ public class CurrentDeploymentExcelService {
 
 				CellStyle tableHeaderStyle = workbook.createCellStyle();
 				setFont(workbook.createFont(), tableHeaderStyle, false, 11, IndexedColors.BLACK.getIndex());
-				// tableHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
-				// tableHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 				tableHeaderStyle.setWrapText(true);
 				setBorder(tableHeaderStyle, BorderStyle.THIN, BorderStyle.THIN, BorderStyle.THIN, BorderStyle.THIN);
 				setBGColor(workbook, tableHeaderStyle, new Color(147, 153, 151), FillPatternType.SOLID_FOREGROUND);
@@ -98,8 +89,6 @@ public class CurrentDeploymentExcelService {
 
 				CellStyle benchStyle = workbook.createCellStyle();
 				setFont(workbook.createFont(), benchStyle, false, 11, IndexedColors.RED.getIndex());
-				// setBGColor(workbook, benchStyle, new Color(94, 219, 92),
-				// FillPatternType.SOLID_FOREGROUND);
 				benchStyle.setAlignment(HorizontalAlignment.CENTER);
 				benchStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 				benchStyle.setWrapText(true);
@@ -119,13 +108,6 @@ public class CurrentDeploymentExcelService {
 				}
 
 				currDepSheet.createFreezePane(5, 1);
-				// Freeze just one column
-				// test2.createFreezePane(1, 0, 1, 0);
-				// // Freeze the columns and rows (forget about scrolling position of the lower
-				// right quadrant).
-				// test3.createFreezePane(0, 4);
-				// // Create a split with the lower left side being the active quadrant
-				// test4.createSplitPane(2000, 2000, 0, 0, Sheet.PANE_LOWER_LEFT);
 
 				int activeConsTable = currDepSheet.getLastRowNum() + 1;
 				Row activeConsTableHeader = currDepSheet.createRow(activeConsTable);
@@ -150,10 +132,6 @@ public class CurrentDeploymentExcelService {
 					for (int j = 0; j < resourceArr.length(); j++) {
 						Cell activeConstResCell = activeConsTableData.createCell(j + 1);
 
-						// if(j == 0) {
-						// activeConstResCell.setCellValue(srNo);
-						// activeConstResCell.setCellStyle(mainStyle);
-						// }else {
 						if (resourceArr.getJSONObject(j).get("label").toString() == "null") {
 							activeConstResCell.setCellValue("Still in Organization");
 						} else {

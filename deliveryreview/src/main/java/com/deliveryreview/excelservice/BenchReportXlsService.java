@@ -31,7 +31,6 @@ import com.deliveryreview.request.BenchReportRequest;
 public class BenchReportXlsService {
 
 	public File exportBenchReport(BenchReportRequest downloadXls) throws IOException {
-		String status = "";
 		Workbook workbook = null;
 		FileOutputStream fileOut = null;
 		File file = new File("DR_Bench_Report.xlsx");
@@ -68,7 +67,6 @@ public class BenchReportXlsService {
 
 
 				Row benchRepHeader1 = benchRepSheet.createRow(0);
-				int srNo = 1;
 
 
 				Cell roleHeader = benchRepHeader1.createCell(0);
@@ -90,8 +88,6 @@ public class BenchReportXlsService {
 
 
 				int currentRow = benchRepSheet.getLastRowNum();
-				Row r = benchRepSheet.getRow(currentRow);
-				//int maxCell=  r.getLastCellNum();
 
 				Row benchRepHeader2 = benchRepSheet.createRow(currentRow+1);
 
