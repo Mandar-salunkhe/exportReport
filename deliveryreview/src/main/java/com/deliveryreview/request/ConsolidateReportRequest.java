@@ -10,6 +10,7 @@ public class ConsolidateReportRequest {
 
 	private CurrentDeploymentRequest currentDeploymentDetails;
 	private List<MomRequest> momDetails;
+	private BenchReportRequest benchDetails;
 
 	public CurrentDeploymentRequest getCurrentDeploymentDetails() {
 		return currentDeploymentDetails;
@@ -27,10 +28,18 @@ public class ConsolidateReportRequest {
 		this.momDetails = momDetails;
 	}
 
+	public BenchReportRequest getBenchDetails() {
+		return benchDetails;
+	}
+
+	public void setBenchDetails(BenchReportRequest benchDetails) {
+		this.benchDetails = benchDetails;
+	}
+
 	@Override
 	public String toString() {
 		return "ConsolidateReportRequest [currentDeploymentDetails=" + currentDeploymentDetails + ", momDetails="
-				+ momDetails + "]";
+				+ momDetails + ", benchDetails=" + benchDetails + "]";
 	}
 
 }

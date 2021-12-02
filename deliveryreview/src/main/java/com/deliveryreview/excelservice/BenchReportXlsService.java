@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -24,19 +26,26 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.deliveryreview.request.BenchReportRequest;
 
 public class BenchReportXlsService {
 
-	public File exportBenchReport(BenchReportRequest downloadXls) throws IOException {
-		Workbook workbook = null;
+	public  Map<Workbook, File> exportBenchReport(BenchReportRequest downloadXls, Workbook workbook, boolean isConsolidateReport) throws IOException {
+		Map<Workbook, File> testMap = new HashedMap<Workbook, File>();
+		File file = new File("");
 		FileOutputStream fileOut = null;
-		File file = new File("DR_Bench_Report.xlsx");
+		if (isConsolidateReport) {
+			file = new File("Delivery_Review-01Dec_v0.1.xlsx");
+		} else {
+
+			file = new File("DR_Bench_Report.xlsx");
+
+		}
+		//File file = new File("DR_Bench_Report.xlsx");
 
 		try {
-			workbook = new XSSFWorkbook();
+			//workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
 			Sheet benchRepSheet = workbook.createSheet("Bench Report");
 
@@ -297,22 +306,37 @@ public class BenchReportXlsService {
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
-			workbook.write(fileOut);
+			
+			testMap.put(workbook, file);
+
+			if (isConsolidateReport) {
+				workbook.write(fileOut);
+				return testMap;
+			} else {
+				workbook.write(fileOut);
+			}
+			testMap.put(workbook, file);
+			//workbook.write(fileOut);
 
 		}catch(Exception ex) {
 			ex.printStackTrace();
+			return testMap;
 		}finally {
-			if (fileOut != null)
-				fileOut.close();
+			if (isConsolidateReport) {
 
-			if (workbook != null) {
-				workbook.close();
+			} else {
+				if (fileOut != null)
+					fileOut.close();
+
+				if (workbook != null) {
+					workbook.close();
+				}
 			}
 		} 
 
 
 
-		return file;
+		return testMap;
 	}
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {

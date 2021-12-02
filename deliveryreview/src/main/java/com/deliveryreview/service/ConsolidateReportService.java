@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.deliveryreview.excelservice.BenchReportXlsService;
 import com.deliveryreview.excelservice.CurrentDeploymentExcelService;
 import com.deliveryreview.excelservice.MomExcelService;
 import com.deliveryreview.request.ConsolidateReportRequest;
@@ -57,15 +58,23 @@ public class ConsolidateReportService {
 				consolidateReportDetails.getCurrentDeploymentDetails().getInActivePartnerEcoSystemRows());
 		JSONArray inActivePartnerEcoSystemRowsArray = new JSONArray(inActivePartnerEcoSystemRows);
 
-		Map<Workbook, File> consolidateReport = currentDeploymentExcelService.exportCurrDepReport(
+		Map<Workbook, File> currentDeploymentReport = currentDeploymentExcelService.exportCurrDepReport(
 				consolidateReportDetails.getCurrentDeploymentDetails().getHeaderList(), activeConsultantsArray,
 				inActiveConsultantsRowsArray, partnerEcoSystemRowsArray, inActivePartnerEcoSystemRowsArray,
 				isConsolidateReport);
 		Workbook consolidateWb = null;
 
-		for (Entry<Workbook, File> workbook : consolidateReport.entrySet()) {
+		for (Entry<Workbook, File> currentDeploymentWorkbook : currentDeploymentReport.entrySet()) {
 
-			consolidateWb = workbook.getKey();
+			consolidateWb = currentDeploymentWorkbook.getKey();
+		}
+		BenchReportXlsService service = new BenchReportXlsService();
+		
+		Map<Workbook, File> benchReport = service.exportBenchReport(consolidateReportDetails.getBenchDetails(),consolidateWb, isConsolidateReport);
+		
+		for (Entry<Workbook, File> benchWorkbook : benchReport.entrySet()) {
+
+			consolidateWb = benchWorkbook.getKey();
 		}
 
 		File momReportFile = momExcelService.exportMomReport(consolidateReportDetails.getMomDetails(), consolidateWb,

@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +28,20 @@ public class BenchReportService {
 		ServiceResponse serviceResponse = new ServiceResponse();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
 		CustomResponse customResponse = null;
+		boolean isConsolidateReport = false;
+		Workbook wb =   new XSSFWorkbook();
+		Map<Workbook, File> currentDeployment = service.exportBenchReport(downloadXls,wb, isConsolidateReport);
 
-		File result = service.exportBenchReport(downloadXls);
+		File result = new File("");
+		if (isConsolidateReport) {
+
+		} else {
+			for (Entry<Workbook, File> file : currentDeployment.entrySet()) {
+				result = file.getValue();
+			}
+		}
+
 		String ExcelFileString = encodeFileToBase64Binary(result.getName());
-		System.out.println(ExcelFileString);
 
 		JSONObject excelData;
 
@@ -38,15 +51,15 @@ public class BenchReportService {
 			excelData.put("status", "Success");
 			excelData.put("fileName", result.getName());
 			excelData.put("filePath", result.getAbsolutePath());
-			excelData.put("excelBase64String", ExcelFileString);		
+			excelData.put("excelBase64String", ExcelFileString);
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
-					ResponseStatus.SUCCESS.getResponseMessage(),excelData.toString());
+					ResponseStatus.SUCCESS.getResponseMessage(), excelData.toString());
 
 		} else {
 			excelData = new JSONObject();
 			excelData.put("status", "Failed");
 			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
-					ResponseStatus.FAILED.getResponseMessage(),excelData.toString());
+					ResponseStatus.FAILED.getResponseMessage(), excelData.toString());
 
 		}
 		responseMap.put("response", customResponse);
