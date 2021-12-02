@@ -11,6 +11,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,8 @@ public class MomService {
 		MomExcelService momExcelService = new MomExcelService();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
 		CustomResponse customResponse = null;
-		File result = momExcelService.exportMomReport(momDetails);
+		Workbook wb =   new XSSFWorkbook();
+		File result = momExcelService.exportMomReport(momDetails,wb,false);
 		
 		String ExcelFileString = encodeFileToBase64Binary(result.getName());
 		

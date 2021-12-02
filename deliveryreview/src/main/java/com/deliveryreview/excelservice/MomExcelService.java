@@ -43,16 +43,26 @@ import com.deliveryreview.utility.ImageUtil;
 public class MomExcelService {
 	private static final Logger logger = LogManager.getLogger(MomExcelService.class);
 
-	public File exportMomReport(List<MomRequest> momDetails) throws IOException {
+	public File exportMomReport(List<MomRequest> momDetails, Workbook workbook, boolean isConsolidateReport)
+			throws IOException {
 		logger.info("Exporting Mom Excel Report");
-		Workbook workbook = null;
+		
 		FileOutputStream fileOut = null;
-		File file = new File("Delivery_Review_Mom_Details.xlsx");
+		File file = new File("");
+
+		if (isConsolidateReport) {
+			file = new File("Delivery_Review_01Dec_v0.1.xlsx");
+			fileOut = new FileOutputStream(file);
+		} else {
+
+			file = new File("Delivery_Review_Mom_Details.xlsx");
+			fileOut = new FileOutputStream(file);
+			
+		}
 
 		try {
-			
-			workbook = new XSSFWorkbook();
-			fileOut = new FileOutputStream(file);
+
+			// workbook =
 
 			for (MomRequest mom : momDetails) {
 				Date date = new Date(mom.getDateL());
@@ -362,12 +372,12 @@ public class MomExcelService {
 			}
 			workbook.write(fileOut);
 
-		} catch (Exception ex ) {
+		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		} finally {
 			if (fileOut != null)
 				fileOut.close();
-			
+
 			if (workbook != null) {
 				workbook.close();
 			}
@@ -376,8 +386,6 @@ public class MomExcelService {
 		return file;
 
 	}
-
-	
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {
 		CellRangeAddress cellMerge = new CellRangeAddress(numRow, untilRow, numCol, untilCol);
