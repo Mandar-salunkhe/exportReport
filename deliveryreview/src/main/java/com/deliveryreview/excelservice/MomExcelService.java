@@ -45,18 +45,20 @@ public class MomExcelService {
 	public File exportMomReport(List<MomRequest> momDetails, Workbook workbook, boolean isConsolidateReport)
 			throws IOException {
 		logger.info("Exporting Mom Excel Report");
-		
+
 		FileOutputStream fileOut = null;
 		File file = new File("");
-
+		Date todaysDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String strDate = formatter.format(todaysDate);
 		if (isConsolidateReport) {
-			file = new File("Delivery_Review_01Dec_v0.1.xlsx");
+			file = new File("Delivery_Review-" + strDate + "_v0.1.xlsx");
 			fileOut = new FileOutputStream(file);
 		} else {
 
-			file = new File("Delivery_Review_Mom_Details.xlsx");
+			file = new File("DR_Mom_Details_Report.xlsx");
 			fileOut = new FileOutputStream(file);
-			
+
 		}
 
 		try {
@@ -66,7 +68,6 @@ public class MomExcelService {
 			for (MomRequest mom : momDetails) {
 				Date date = new Date(mom.getDateL());
 
-				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 				Sheet momSheet = workbook.createSheet("Mom-" + formatter.format(date));
 
 				try {

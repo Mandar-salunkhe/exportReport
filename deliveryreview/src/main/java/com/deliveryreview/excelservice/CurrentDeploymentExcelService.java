@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +40,15 @@ public class CurrentDeploymentExcelService {
 			JSONArray inActiveConsultantsRowsArray, JSONArray partnerEcoSystemRowsArray,
 			JSONArray inActivePartnerEcoSystemRowsArray, boolean isConsolidateReport) throws IOException {
 
-		Map<Workbook, File> testMap = new HashedMap<Workbook, File>();
+		Map<Workbook, File> currentDeploymentReportMap = new HashedMap<Workbook, File>();
 		File file = new File("");
 		Workbook workbook = null;
 		FileOutputStream fileOut = null;
+		Date todaysDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String strDate = formatter.format(todaysDate);
 		if (isConsolidateReport) {
-			file = new File("Delivery_Review-01Dec_v0.1.xlsx");
+			file = new File("Delivery_Review-" + strDate + "_v0.1.xlsx");
 		} else {
 
 			file = new File("DR_Current_Deployment_Report.xlsx");
@@ -54,7 +59,6 @@ public class CurrentDeploymentExcelService {
 			workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
 			Sheet currDepSheet = workbook.createSheet("Current Deployment");
-			
 
 			try {
 
@@ -286,20 +290,20 @@ public class CurrentDeploymentExcelService {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			
-			testMap.put(workbook, file);
+
+			currentDeploymentReportMap.put(workbook, file);
 
 			if (isConsolidateReport) {
 				workbook.write(fileOut);
-				return testMap;
+				return currentDeploymentReportMap;
 			} else {
 				workbook.write(fileOut);
 			}
-			testMap.put(workbook, file);
+			currentDeploymentReportMap.put(workbook, file);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return testMap;
+			return currentDeploymentReportMap;
 		} finally {
 			if (isConsolidateReport) {
 
@@ -312,7 +316,7 @@ public class CurrentDeploymentExcelService {
 				}
 			}
 		}
-		return testMap;
+		return currentDeploymentReportMap;
 
 	}
 

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -32,11 +34,14 @@ import com.deliveryreview.request.BenchReportRequest;
 public class BenchReportXlsService {
 
 	public  Map<Workbook, File> exportBenchReport(BenchReportRequest downloadXls, Workbook workbook, boolean isConsolidateReport) throws IOException {
-		Map<Workbook, File> testMap = new HashedMap<Workbook, File>();
+		Map<Workbook, File> benchReportMap = new HashedMap<Workbook, File>();
 		File file = new File("");
 		FileOutputStream fileOut = null;
+		Date todaysDate = new Date();
+	    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
+	    String strDate= formatter.format(todaysDate);  
 		if (isConsolidateReport) {
-			file = new File("Delivery_Review-01Dec_v0.1.xlsx");
+			file = new File("Delivery_Review-"+strDate+"_v0.1.xlsx");
 		} else {
 
 			file = new File("DR_Bench_Report.xlsx");
@@ -307,20 +312,20 @@ public class BenchReportXlsService {
 				ex.printStackTrace();
 			}
 			
-			testMap.put(workbook, file);
+			benchReportMap.put(workbook, file);
 
 			if (isConsolidateReport) {
 				workbook.write(fileOut);
-				return testMap;
+				return benchReportMap;
 			} else {
 				workbook.write(fileOut);
 			}
-			testMap.put(workbook, file);
+			benchReportMap.put(workbook, file);
 			//workbook.write(fileOut);
 
 		}catch(Exception ex) {
 			ex.printStackTrace();
-			return testMap;
+			return benchReportMap;
 		}finally {
 			if (isConsolidateReport) {
 
@@ -336,7 +341,7 @@ public class BenchReportXlsService {
 
 
 
-		return testMap;
+		return benchReportMap;
 	}
 
 	protected static void setMerge(Sheet sheet, int numRow, int untilRow, int numCol, int untilCol, boolean border) {
