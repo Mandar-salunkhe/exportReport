@@ -1,5 +1,7 @@
 package com.deliveryreview.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,11 +28,13 @@ public class ConsolidateReportController {
 
 	@Autowired
 	ConsolidateReportService consolidateReportService;
+	
+	private static final Logger logger = LogManager.getLogger(ConsolidateReportController.class);
 
 	@PostMapping("/downloadConsolidateReport")
 	public ServiceResponse downloadConsolidateReport(@RequestBody ConsolidateReportRequest consolidateReportDetails)
 			throws Exception {
-		//System.out.println(consolidateReportDetails);
+		logger.info("START : Consolidate Report");
 		
 		
 		return consolidateReportService.downloadConsolidateReport(consolidateReportDetails);

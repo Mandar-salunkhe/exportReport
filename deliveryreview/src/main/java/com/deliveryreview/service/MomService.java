@@ -50,17 +50,18 @@ public class MomService {
 			
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
 					ResponseStatus.SUCCESS.getResponseMessage(),excelData.toString());
+			result.delete();
 			
-			logger.info("Success Response");
+			logger.info("SUCCESS END : MOM Report");
 		} else {
 			
 			excelData = new JSONObject();
 			excelData.put("status", "Failed");
-			
+			result.delete();
 			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
 					ResponseStatus.FAILED.getResponseMessage(),excelData.toString());
 			
-			logger.error("Failed Response");
+			logger.error("FAILURE END : MOM Report");
 		}
 
 		responseMap.put("response", customResponse);

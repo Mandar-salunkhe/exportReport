@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
@@ -22,6 +24,8 @@ import com.deliveryreview.utility.ResponseStatus;
 @Service
 public class BenchReportService {
 
+	private static final Logger logger = LogManager.getLogger(BenchReportService.class);
+
 	public ServiceResponse exportBenchReport(BenchReportRequest downloadXls) throws IOException {
 
 		BenchReportXlsService service = new BenchReportXlsService();
@@ -29,8 +33,8 @@ public class BenchReportService {
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
 		CustomResponse customResponse = null;
 		boolean isConsolidateReport = false;
-		Workbook wb =   new XSSFWorkbook();
-		Map<Workbook, File> currentDeployment = service.exportBenchReport(downloadXls,wb, isConsolidateReport);
+		Workbook wb = new XSSFWorkbook();
+		Map<Workbook, File> currentDeployment = service.exportBenchReport(downloadXls, wb, isConsolidateReport);
 
 		File result = new File("");
 		if (isConsolidateReport) {
@@ -54,12 +58,16 @@ public class BenchReportService {
 			excelData.put("excelBase64String", ExcelFileString);
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
 					ResponseStatus.SUCCESS.getResponseMessage(), excelData.toString());
+			result.delete();
+			logger.info("SUCCESS END : Bench Report");
 
 		} else {
 			excelData = new JSONObject();
 			excelData.put("status", "Failed");
 			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
 					ResponseStatus.FAILED.getResponseMessage(), excelData.toString());
+			result.delete();
+			logger.error("FAILURE END : Bench Report");
 
 		}
 		responseMap.put("response", customResponse);

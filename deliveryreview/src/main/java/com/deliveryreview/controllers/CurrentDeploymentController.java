@@ -2,10 +2,11 @@ package com.deliveryreview.controllers;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,12 @@ public class CurrentDeploymentController {
 	@Autowired
 	CurrentDeploymentService deploymentService;
 	
+	private static final Logger logger = LogManager.getLogger(CurrentDeploymentController.class);
+	
 	@PostMapping("/downloadDeploymentReport")
     public ServiceResponse DownloadDeploymentStatus(@RequestBody CurrentDeploymentRequest downloadXls) throws IOException {
-		System.out.println("API is been Hit!!!!!! ");
+		
+		logger.info("START : Current Deployment Report");
 		 ObjectMapper mapper = new ObjectMapper();
      
 			String activeConsultantsRows = mapper.writeValueAsString(downloadXls.getActiveConsultantsRows());
@@ -44,9 +48,5 @@ public class CurrentDeploymentController {
         return deploymentService.exportDeploymentData(downloadXls.getHeaderList(),activeConsultantsArray,inActiveConsultantsRowsArray,partnerEcoSystemRowsArray,inActivePartnerEcoSystemRowsArray);
         
     }
-	@GetMapping("/test")
-	public String testApi() {
-		System.out.println("API is been Hit!!!!!! ");
-		return "Hello User";
-	}		
+		
 }

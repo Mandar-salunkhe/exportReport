@@ -93,8 +93,8 @@ public class ConsolidateReportService {
 
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
 					ResponseStatus.SUCCESS.getResponseMessage(), excelData.toString());
-
-			logger.info("Success Response");
+			momReportFile.delete();
+			logger.info("SUCCESS END : Consolidate Report");
 		} else {
 
 			excelData = new JSONObject();
@@ -102,13 +102,12 @@ public class ConsolidateReportService {
 
 			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
 					ResponseStatus.FAILED.getResponseMessage(), excelData.toString());
-
-			logger.error("Failed Response");
+			momReportFile.delete();
+			logger.error("FAILURE END : Consolidate Report");
 		}
 
 		responseMap.put("response", customResponse);
 		serviceResponse.setServiceResponse(responseMap);
-		System.out.println(momReportFile.getName());
 		return serviceResponse;
 
 	}

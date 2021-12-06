@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +24,8 @@ import com.deliveryreview.utility.ResponseStatus;
 
 @Service
 public class CurrentDeploymentService {
+	
+	private static final Logger logger = LogManager.getLogger(CurrentDeploymentService.class);
 
 	public ServiceResponse exportDeploymentData(List<HeaderList> headerList, JSONArray activeConsultantsArray,
 			JSONArray inActiveConsultantsRowsArray, JSONArray partnerEcoSystemRowsArray,
@@ -59,12 +63,16 @@ public class CurrentDeploymentService {
 			excelData.put("excelBase64String", ExcelFileString);
 			customResponse = new CustomResponse(ResponseStatus.SUCCESS.getResponseCode(),
 					ResponseStatus.SUCCESS.getResponseMessage(), excelData.toString());
+			result.delete();
+			logger.info("SUCCESS END : Current Deployment Report");
 
 		} else {
 			excelData = new JSONObject();
 			excelData.put("status", "Failed");
 			customResponse = new CustomResponse(ResponseStatus.FAILED.getResponseCode(),
 					ResponseStatus.FAILED.getResponseMessage(), excelData.toString());
+			result.delete();
+			logger.info("FAILURE END : Current Deployment Report");
 
 		}
 		responseMap.put("response", customResponse);
