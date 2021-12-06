@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.deliveryreview.excelservice.BenchReportXlsService;
 import com.deliveryreview.excelservice.CurrentDeploymentExcelService;
 import com.deliveryreview.excelservice.MomExcelService;
+import com.deliveryreview.excelservice.ProjectDeliveryExcelService;
 import com.deliveryreview.request.ConsolidateReportRequest;
 import com.deliveryreview.response.CustomResponse;
 import com.deliveryreview.utility.ResponseStatus;
@@ -39,6 +40,8 @@ public class ConsolidateReportService {
 
 		CurrentDeploymentExcelService currentDeploymentExcelService = new CurrentDeploymentExcelService();
 		MomExcelService momExcelService = new MomExcelService();
+		BenchReportXlsService service = new BenchReportXlsService();
+		ProjectDeliveryExcelService deliveryExcelService = new ProjectDeliveryExcelService();
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -57,18 +60,24 @@ public class ConsolidateReportService {
 		String inActivePartnerEcoSystemRows = mapper.writeValueAsString(
 				consolidateReportDetails.getCurrentDeploymentDetails().getInActivePartnerEcoSystemRows());
 		JSONArray inActivePartnerEcoSystemRowsArray = new JSONArray(inActivePartnerEcoSystemRows);
+		
+		  Map<Workbook, File> projectDeliveryReport = deliveryExcelService.exportProjectDelivReport(consolidateReportDetails.getProjectDeliveryDetails(), isConsolidateReport);
+			Workbook consolidateWb = null;
+			for (Entry<Workbook, File> deliveryStat : projectDeliveryReport.entrySet()) {
+				consolidateWb = deliveryStat.getKey();
+			}
 
 		Map<Workbook, File> currentDeploymentReport = currentDeploymentExcelService.exportCurrDepReport(
 				consolidateReportDetails.getCurrentDeploymentDetails().getHeaderList(), activeConsultantsArray,
 				inActiveConsultantsRowsArray, partnerEcoSystemRowsArray, inActivePartnerEcoSystemRowsArray,
-				isConsolidateReport);
-		Workbook consolidateWb = null;
+				isConsolidateReport,consolidateWb);
+	
 
 		for (Entry<Workbook, File> currentDeploymentWorkbook : currentDeploymentReport.entrySet()) {
 
 			consolidateWb = currentDeploymentWorkbook.getKey();
 		}
-		BenchReportXlsService service = new BenchReportXlsService();
+
 		
 		Map<Workbook, File> benchReport = service.exportBenchReport(consolidateReportDetails.getBenchDetails(),consolidateWb, isConsolidateReport);
 		

@@ -75,7 +75,7 @@ public class MomExcelService {
 					Row momHeaderBlankRow = momSheet.createRow(0);
 					CellStyle momHeaderBlankRowStyle = workbook.createCellStyle();
 					setBGColor(workbook, momHeaderBlankRowStyle, new Color(255, 255, 255),
-							FillPatternType.SOLID_FOREGROUND);
+				    FillPatternType.SOLID_FOREGROUND);
 					Cell momHeaderBlankRowCell = momHeaderBlankRow.createCell(0);
 					momHeaderBlankRowCell.setCellStyle(momHeaderBlankRowStyle);
 

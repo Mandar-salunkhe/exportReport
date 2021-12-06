@@ -38,11 +38,11 @@ public class CurrentDeploymentExcelService {
 
 	public Map<Workbook, File> exportCurrDepReport(List<HeaderList> headerList, JSONArray activeConsultantsArray,
 			JSONArray inActiveConsultantsRowsArray, JSONArray partnerEcoSystemRowsArray,
-			JSONArray inActivePartnerEcoSystemRowsArray, boolean isConsolidateReport) throws IOException {
+			JSONArray inActivePartnerEcoSystemRowsArray, boolean isConsolidateReport, Workbook workbook) throws IOException {
 
 		Map<Workbook, File> currentDeploymentReportMap = new HashedMap<Workbook, File>();
 		File file = new File("");
-		Workbook workbook = null;
+		
 		FileOutputStream fileOut = null;
 		Date todaysDate = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -56,7 +56,6 @@ public class CurrentDeploymentExcelService {
 		}
 		try {
 
-			workbook = new XSSFWorkbook();
 			fileOut = new FileOutputStream(file);
 			Sheet currDepSheet = workbook.createSheet("Current Deployment");
 
