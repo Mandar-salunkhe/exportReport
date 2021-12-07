@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -35,11 +36,11 @@ public class CurrentDeploymentService {
 		ServiceResponse serviceResponse = new ServiceResponse();
 		Map<Object, Object> responseMap = new HashMap<Object, Object>();
 		CustomResponse customResponse = null;
-
+		Workbook wb =   new XSSFWorkbook();
 		boolean isConsolidateReport = false;
 		Map<Workbook, File> currentDeployment = service.exportCurrDepReport(headerList, activeConsultantsArray,
 				inActiveConsultantsRowsArray, partnerEcoSystemRowsArray, inActivePartnerEcoSystemRowsArray,
-				isConsolidateReport);
+				isConsolidateReport,wb);
 		
 		File result = new File("");
 		if (isConsolidateReport) {
