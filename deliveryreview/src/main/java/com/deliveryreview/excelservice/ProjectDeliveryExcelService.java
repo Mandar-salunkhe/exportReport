@@ -684,20 +684,20 @@ public class ProjectDeliveryExcelService {
 			int row20Data = deliveryReviewSheet.getLastRowNum() + 1;
 			Row row20Col = deliveryReviewSheet.createRow(row20Data);
 
-			Cell srNo20 = row20Col.createCell(row18 - 3);
+			Cell srNo20 = row20Col.createCell(row19-3);
 			srNo20.setCellValue(15);
 			srNo20.setCellStyle(mainStyle);
 
-			Cell paramName20 = row20Col.createCell(row18);
+			Cell paramName20 = row20Col.createCell(row19-2);
 			paramName20.setCellValue("Learnings");
 			paramName20.setCellStyle(mainStyle);
 
-			Cell goal15 = row20Col.createCell(row19 - 1);
+			Cell goal15 = row20Col.createCell(row19-1);
 			goal15.setCellValue("");
 			goal15.setCellStyle(mainStyle);
 
 			for (int i = 0; i < projectDeliveryDetails.size(); i++) {
-				Cell learningCell = row20Col.createCell(row18);
+				Cell learningCell = row20Col.createCell(row19);
 				learningCell.setCellValue(projectDeliveryDetails.get(i).getLearnings());
 				if (projectDeliveryDetails.get(i).getLearningsPriorityStatus() != null) {
 					if (projectDeliveryDetails.get(i).getLearningsPriorityStatus().equals("Red")) {
@@ -712,8 +712,8 @@ public class ProjectDeliveryExcelService {
 				} else {
 					learningCell.setCellStyle(mainStyle);
 				}
-				deliveryReviewSheet.setColumnWidth(row18, 25 * 300);
-				row18++;
+				deliveryReviewSheet.setColumnWidth(row19, 25 * 300);
+				row19++;
 			}
 
 			workbook.write(fileOut);
