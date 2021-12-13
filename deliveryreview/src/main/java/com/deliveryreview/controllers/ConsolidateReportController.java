@@ -36,7 +36,6 @@ public class ConsolidateReportController {
 			throws Exception {
 		logger.info("START : Consolidate Report");
 		
-		
 		return consolidateReportService.downloadConsolidateReport(consolidateReportDetails);
 	}
 
